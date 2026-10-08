@@ -59,6 +59,21 @@ export function Settings({ autoLockMin, setAutoLockMin }: { autoLockMin: number;
             </Field>
           </div>
         </Card>
+        <Card title="WhatsApp for login codes & orders">
+          <div className="space-y-4 text-sm">
+            <p className="pf-muted">Every restaurant sends codes and order messages from its own WhatsApp number, linked by scanning a QR in their admin. If it isn't linked, messages go by text (SMS).</p>
+            <div className="flex items-center gap-3"><Toggle label="Require own number" on={f.wa_require_own_number ?? true} onChange={(v) => setF({ ...f, wa_require_own_number: v })} /> Each restaurant must link its own WhatsApp number</div>
+            <div className="flex items-center gap-3"><Toggle label="SMS fallback" on={f.wa_sms_fallback ?? true} onChange={(v) => setF({ ...f, wa_sms_fallback: v })} /> Send by text (SMS) when WhatsApp isn't linked or fails</div>
+            <div className="flex items-center gap-3"><Toggle label="Block until linked" on={f.wa_block_until_linked ?? false} onChange={(v) => setF({ ...f, wa_block_until_linked: v })} /> Lock the restaurant admin until WhatsApp is linked</div>
+            <Field label="Days to link before reminders turn strict"><input type="number" className="pf-input" value={f.wa_link_grace_days ?? 3} onChange={s("wa_link_grace_days")} /></Field>
+            <Field label="Remind disconnected restaurants every">
+              <select className="pf-select" value={f.wa_reminder_hours ?? 24} onChange={s("wa_reminder_hours")}>
+                {[6, 12, 24, 48, 0].map((h) => <option key={h} value={h}>{h ? `${h} hours` : "Never"}</option>)}
+              </select>
+            </Field>
+            {!(f.wa_sms_fallback ?? true) ? <div className="pf-banner tone-red"><AlertTriangle className="h-4 w-4" /> With SMS fallback off, customers of unlinked restaurants won't get login codes.</div> : null}
+          </div>
+        </Card>
         <Card title="Danger zone">
           <div className="flex items-center gap-3 text-sm"><Toggle label="Maintenance mode" on={f.maintenance_mode} onChange={(v) => setF({ ...f, maintenance_mode: v })} /> Maintenance mode (all restaurant sites show "back soon")</div>
         </Card>

@@ -132,6 +132,15 @@ export type PlatformSettings = {
   payout_jazzcash: string;
   payout_bank: string;
   terms_url: string;
+  /** Each restaurant must scan a QR to link its own WhatsApp number for OTP/order messages. */
+  wa_require_own_number: boolean;
+  /** When a restaurant's WhatsApp isn't linked or a send fails, send by text (SMS) instead. */
+  wa_sms_fallback: boolean;
+  /** Block the restaurant admin until they link WhatsApp (after the grace days). */
+  wa_block_until_linked: boolean;
+  wa_link_grace_days: number;
+  /** How often restaurants are reminded to relink when disconnected (hours, 0 = never). */
+  wa_reminder_hours: number;
 };
 
 export type DataSource = "live" | "sample";

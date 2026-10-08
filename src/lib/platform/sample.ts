@@ -166,6 +166,11 @@ export function sampleSettings(): PlatformSettings {
     payout_jazzcash: "0300-0000000 (Kennedy SaaS)",
     payout_bank: "Meezan Bank — PK00 MEZN 0000 0000 0000",
     terms_url: "https://kennedy.app/terms",
+    wa_require_own_number: true,
+    wa_sms_fallback: true,
+    wa_block_until_linked: false,
+    wa_link_grace_days: 3,
+    wa_reminder_hours: 24,
   };
 }
 

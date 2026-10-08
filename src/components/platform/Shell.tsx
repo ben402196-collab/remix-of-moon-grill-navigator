@@ -118,8 +118,7 @@ export function Shell() {
 
       <div className="pf-content">
         <header className="pf-topbar">
-          <button className="pf-icon-btn lg:hidden" aria-label="Menu" onClick={() => setMobileOpen(true)}><Menu className="h-5 w-5" /></button>
-          <button className="pf-icon-btn max-lg:hidden" aria-label="Toggle sidebar" onClick={() => setCollapsed(!collapsed)}><Menu className="h-5 w-5" /></button>
+          <button className="pf-icon-btn" aria-label="Toggle menu" onClick={() => (window.matchMedia("(min-width: 1024px)").matches ? setCollapsed(!collapsed) : setMobileOpen(true))}><Menu className="h-5 w-5" /></button>
           <div className="pf-search max-sm:hidden">
             <input aria-label="Search restaurants" placeholder="Search restaurants…" value={search} onChange={(e) => setSearch(e.target.value)} />
             <button aria-label="Search"><Search className="h-4 w-4" /></button>

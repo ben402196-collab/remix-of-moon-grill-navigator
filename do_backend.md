@@ -133,3 +133,17 @@ So the console can stop sampling, include on each tenant object:
 3. `plans/` CRUD + `stats/trend/`
 4. `settings/` + `audit/`
 5. `tickets/` + `announcements/` + `team/` + `integrations/` + invoice additions
+
+## WhatsApp own-number policy (OTP + order messages)
+
+Each restaurant links its own WhatsApp number by scanning the QR in its admin (`/whatsapp/qr/?tenant=`). Add these fields to `GET/PATCH /platform/settings/`:
+
+| Field | Type | Meaning |
+|---|---|---|
+| `wa_require_own_number` | bool | Restaurant must link its own number; never send from a shared platform number |
+| `wa_sms_fallback` | bool | If tenant WhatsApp is not connected or a send fails, send the OTP by SMS |
+| `wa_block_until_linked` | bool | After `wa_link_grace_days`, restaurant admin shows a blocking "Link WhatsApp" screen |
+| `wa_link_grace_days` | int | Days after signup to link before blocking/strict reminders |
+| `wa_reminder_hours` | int | Remind disconnected restaurant owners every N hours (0 = off) |
+
+Backend behaviour for `POST /auth/phone/request-code/`: use the tenant's own WhatsApp session; if disconnected or the send errors and `wa_sms_fallback` is true, send SMS and return `channel: "sms"`, `sent_via_whatsapp: false`. If fallback is off, return 503 with a clear message. `/auth/phone/config/` must return `whatsapp_connected` per tenant. Log each fallback in audit (`category: "integrations"`).
