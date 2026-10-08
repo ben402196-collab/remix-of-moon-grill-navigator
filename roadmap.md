@@ -1,6 +1,6 @@
-# Platform owner workspace
-- [ ] Implement selected light caddy look and dotted grid.
-- [ ] Add overview, restaurants, subscriptions, invoices, team and permission controls.
-- [ ] Add support, integrations, audit and platform settings views.
-- [ ] Provide clearly labeled frontend demo preview; preserve protected live access.
-- [ ] Verify navigation, sample workflows and layout; backend integration deferred by request.
+# Roadmap
+
+- [x] Clone moon-grill-hub, set env vars (API base, tenant slug, demo off, lock code).
+- [x] Rebuild platform owner console in AdminHub style: lock screen, sidebar, dashboard, restaurants + detail drawer, plans, invoices, support, announcements, team, connections, activity log, settings.
+- [x] Write do_backend.md with every missing backend endpoint and payload.
+- [ ] Apply do_backend.md items to the Django backend (blocked: backend repo lives outside this project).

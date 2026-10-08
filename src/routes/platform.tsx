@@ -2,6 +2,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import { readAccount } from "@/lib/auth";
 import { Shell } from "@/components/platform/Shell";
+import "@/styles/platform.css";
 
 export const Route = createFileRoute("/platform")({
   ssr: false,
