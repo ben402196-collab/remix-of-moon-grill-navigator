@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Crown, LogOut, Menu, Moon, Search, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Bell, Crown, LogOut, Menu, Moon, Search, Sun } from "lucide-react";
 
 import { LockScreen, UNLOCK_KEY } from "./LockScreen";
 import { NAV, type View } from "./nav";
@@ -19,11 +19,11 @@ import { Settings } from "./views/Settings";
 import { Pill } from "./ui";
 
 const AUTOLOCK_KEY = "kmg.platform.autolock";
-export const getAutoLockMin = () => Number(localStorage.getItem(AUTOLOCK_KEY) ?? 15);
-export const setAutoLockMin = (n: number) => localStorage.setItem(AUTOLOCK_KEY, String(n));
+const getAutoLockMin = () => Number(localStorage.getItem(AUTOLOCK_KEY) ?? 15);
+const storeAutoLockMin = (n: number) => localStorage.setItem(AUTOLOCK_KEY, String(n));
 
 export function Shell() {
-  const { tickets, sources, loading } = usePlatform();
+  const { tickets, sources, loading, tenants, settings } = usePlatform();
   const [locked, setLocked] = useState(() => sessionStorage.getItem(UNLOCK_KEY) !== "1");
   const [view, setView] = useState<View>("overview");
   const [dark, setDark] = useState(() => localStorage.getItem("kmg.platform.dark") === "1");
@@ -34,7 +34,7 @@ export function Shell() {
   const [notifOpen, setNotifOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [autoLockMin, setAutoLockState] = useState(15);
-  const lastActive = useRef(Date.now());
+  const [lastActive] = useState(() => ({ current: Date.now() }));
 
   useEffect(() => {
     setAutoLockState(getAutoLockMin());
@@ -56,34 +56,33 @@ export function Shell() {
       }
     }, 30_000);
     return () => { evts.forEach((e) => window.removeEventListener(e, bump)); clearInterval(t); };
-  }, [locked]);
+  }, [locked, lastActive]);
 
   const unlock = () => { lastActive.current = Date.now(); setLocked(false); };
-
   const openTenant = (slug: string) => { setDrawer(slug); setOnboard(false); };
 
-  const found = search.trim()
-    ? usePlatform().tenants.filter((t) => `${t.name} ${t.slug} ${t.city}`.toLowerCase().includes(search.toLowerCase())).slice(0, 6)
-    : [];
+  const q = search.trim().toLowerCase();
+  const found = q ? tenants.filter((t) => `${t.name} ${t.slug} ${t.city}`.toLowerCase().includes(q)).slice(0, 6) : [];
   const openTickets = tickets.filter((t) => t.status !== "resolved").length;
   const label = NAV.flatMap((g) => g.items).find((i) => i.id === view)?.label ?? "";
 
-  const body = loading && !usePlatform().tenants.length ? (
-    <div className="pf-empty"><Crown className="pf-spin mx-auto mb-3 h-8 w-8" style={{ color: "var(--pf-blue)" }} />Loading your platform…</div>
-  ) : (
-    <>
-      {view === "overview" && <Overview go={setView} openTenant={openTenant} onboard={() => setOnboard(true)} />}
-      {view === "restaurants" && <Restaurants openTenant={openTenant} onboard={() => setOnboard(true)} />}
-      {view === "plans" && <Plans />}
-      {view === "billing" && <Billing />}
-      {view === "support" && <Support openTenant={openTenant} />}
-      {view === "announcements" && <Announcements />}
-      {view === "team" && <Team />}
-      {view === "integrations" && <Integrations openTenant={openTenant} />}
-      {view === "audit" && <Audit />}
-      {view === "settings" && <Settings autoLockMin={autoLockMin} setAutoLockMin={(n) => { setAutoLockMin(n); setAutoLockState(n); }} />}
-    </>
-  );
+  const body =
+    loading && !tenants.length ? (
+      <div className="pf-empty"><Crown className="pf-spin mx-auto mb-3 h-8 w-8" style={{ color: "var(--pf-blue)" }} />Loading your platform…</div>
+    ) : (
+      <>
+        {view === "overview" && <Overview go={setView} openTenant={openTenant} onboard={() => setOnboard(true)} />}
+        {view === "restaurants" && <Restaurants openTenant={openTenant} onboard={() => setOnboard(true)} />}
+        {view === "plans" && <Plans />}
+        {view === "billing" && <Billing />}
+        {view === "support" && <Support openTenant={openTenant} />}
+        {view === "announcements" && <Announcements />}
+        {view === "team" && <Team />}
+        {view === "integrations" && <Integrations openTenant={openTenant} />}
+        {view === "audit" && <Audit />}
+        {view === "settings" && <Settings autoLockMin={autoLockMin} setAutoLockMin={(n) => { storeAutoLockMin(n); setAutoLockState(n); }} />}
+      </>
+    );
 
   return (
     <div className={`pf ${dark ? "pf-dark" : ""}`}>
@@ -92,7 +91,7 @@ export function Shell() {
       <aside className={`pf-sidebar ${collapsed ? "collapsed" : ""} ${mobileOpen ? "mobile-open" : ""}`}>
         <div className="pf-brand">
           <span className="pf-brand-icon"><Crown className="h-5 w-5" /></span>
-          <span className="truncate">{usePlatform().settings.platform_name}</span>
+          <span className="truncate">{settings.platform_name}</span>
         </div>
         <nav>
           <ul className="pf-menu">
@@ -139,7 +138,7 @@ export function Shell() {
             <button className="pf-icon-btn" aria-label={dark ? "Light mode" : "Dark mode"} onClick={() => setDark(!dark)}>{dark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}</button>
             <div className="relative">
               <button className="pf-icon-btn" aria-label="Notifications" onClick={() => setNotifOpen(!notifOpen)}>
-                📳<span className="pf-dot">{openTickets}</span>
+                <Bell className="h-5 w-5" /><span className="pf-dot">{openTickets}</span>
               </button>
               {notifOpen ? (
                 <div className="pf-dropdown">
@@ -166,5 +165,3 @@ export function Shell() {
     </div>
   );
 }
-
-export type { ReactNode };
