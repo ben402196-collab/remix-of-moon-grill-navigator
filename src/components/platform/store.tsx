@@ -55,23 +55,19 @@ const asList = <T,>(r: unknown): T[] => (Array.isArray(r) ? (r as T[]) : Array.i
 const notBuilt = (e: unknown) => e instanceof ApiError && (e.isNetwork || [404, 405, 501].includes(e.status));
 
 export function PlatformProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<State>(() => {
-    const tenants = S.sampleTenants();
-    return {
-      stats: null,
-      tenants: [],
-      invoices: [],
-      plans: S.samplePlans(),
-      tickets: S.sampleTickets(),
-      announcements: S.sampleAnnouncements(),
-      team: S.sampleTeam(),
-      audit: S.sampleAudit(),
-      integrations: S.sampleIntegrations(),
-      settings: S.sampleSettings(),
-      trend: S.sampleTrend(),
-      ...{ _seed: tenants },
-    } as State;
-  });
+  const [state, setState] = useState<State>(() => ({
+    stats: null,
+    tenants: [],
+    invoices: [],
+    plans: S.samplePlans(),
+    tickets: S.sampleTickets(),
+    announcements: S.sampleAnnouncements(),
+    team: S.sampleTeam(),
+    audit: S.sampleAudit(),
+    integrations: S.sampleIntegrations(),
+    settings: S.sampleSettings(),
+    trend: S.sampleTrend(),
+  }));
   const [sources, setSources] = useState<Sources>({});
   const [loading, setLoading] = useState(true);
 
