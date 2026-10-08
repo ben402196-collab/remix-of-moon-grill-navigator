@@ -1,6 +1,6 @@
 import { Flame, Gift, Pizza, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import truckVideo from "@/assets/kennedy-truck.webm.asset.json";
+import truckImg from "@/assets/kennedy-truck.webp";
 
 type Item = { label: string; Icon: typeof Flame };
 
