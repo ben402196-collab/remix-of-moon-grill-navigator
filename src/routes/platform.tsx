@@ -2,6 +2,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import { readAccount } from "@/lib/auth";
 import { Shell } from "@/components/platform/Shell";
+import { PlatformProvider } from "@/components/platform/store";
 import "@/styles/platform.css";
 
 export const Route = createFileRoute("/platform")({
@@ -22,5 +23,9 @@ export const Route = createFileRoute("/platform")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: Shell,
+  component: () => (
+    <PlatformProvider>
+      <Shell />
+    </PlatformProvider>
+  ),
 });
