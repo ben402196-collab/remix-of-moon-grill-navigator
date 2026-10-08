@@ -169,5 +169,24 @@ export const PLATFORM = {
   invoices: "/platform/invoices/",
   /** POST -> Approve or reject payment proof */
   verifyInvoice: (id: number | string) => `/platform/invoices/${id}/verify/`,
+
+  // ── Requested from backend (see do_backend.md). UI falls back to sample data until live. ──
+  trend: "/platform/stats/trend/",
+  plans: "/platform/plans/",
+  planDetail: (slug: string) => `/platform/plans/${slug}/`,
+  tenantUsers: (slug: string) => `/platform/tenants/${slug}/users/`,
+  tenantFeatures: (slug: string) => `/platform/tenants/${slug}/features/`,
+  tenantImpersonate: (slug: string) => `/platform/tenants/${slug}/impersonate/`,
+  invoiceCreate: "/platform/invoices/",
+  invoiceRemind: (id: number | string) => `/platform/invoices/${id}/remind/`,
+  tickets: "/platform/tickets/",
+  ticketDetail: (id: string) => `/platform/tickets/${id}/`,
+  ticketReply: (id: string) => `/platform/tickets/${id}/reply/`,
+  announcements: "/platform/announcements/",
+  team: "/platform/team/",
+  teamMember: (id: string) => `/platform/team/${id}/`,
+  audit: "/platform/audit/",
+  integrations: "/platform/integrations/",
+  settings: "/platform/settings/",
 } as const;
 
