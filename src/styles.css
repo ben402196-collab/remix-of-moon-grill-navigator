@@ -348,6 +348,11 @@
     animation-play-state: paused;
   }
   .offer-truck video, .offer-truck img { display: block; width: var(--offer-truck-width); height: calc(var(--offer-truck-width) * 5 / 7); max-width: none; object-fit: contain; transform: translateZ(0); }
+  .offer-truck img { animation: offer-truck-bob 1.6s ease-in-out infinite; }
+  @keyframes offer-truck-bob {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -4%, 0); }
+  }
   .offer-truck-hitch {
     position: absolute;
     left: -4px;
