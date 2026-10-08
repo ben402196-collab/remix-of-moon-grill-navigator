@@ -69,15 +69,13 @@ export function BonusTape() {
       aria-label="Today's deals and bonus offers"
     >
       {started && <div className="offer-truck" aria-hidden="true">
-                <video
-          src={truckVideo.url}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          ref={(el) => { if (el) el.playbackRate = 1.1; }}
-          onLoadedMetadata={(e) => { e.currentTarget.playbackRate = 1.1; }}
+        <img
+          src={truckImg}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          width={1024}
+          height={768}
         />
       </div>}
       <div className="ticket ticket--gold">
