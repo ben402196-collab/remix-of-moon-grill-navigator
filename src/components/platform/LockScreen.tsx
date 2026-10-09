@@ -13,7 +13,7 @@ export const UNLOCK_KEY = "kmg.platform.unlocked";
 export function LockScreen({ onUnlock, onFail }: { onUnlock: () => void; onFail?: () => void }) {
   const [entering, setEntering] = useState(false);
   const [pin, setPin] = useState("");
-  const [state, setState] = useState<"idle" | "checking" | "error">("idle");
+  const [state, setState] = useState<"idle" | "checking" | "error" | "opening">("idle");
   const [now, setNow] = useState<Date | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -57,8 +57,12 @@ export function LockScreen({ onUnlock, onFail }: { onUnlock: () => void; onFail?
     setState("checking");
     setTimeout(() => {
       if (code === LOCK_CODE) {
-        sessionStorage.setItem(UNLOCK_KEY, String(Date.now()));
-        onUnlock();
+        // Doors slide apart first (1.05s), then the console unlocks.
+        setState("opening");
+        setTimeout(() => {
+          sessionStorage.setItem(UNLOCK_KEY, String(Date.now()));
+          onUnlock();
+        }, 1050);
       } else {
         setState("error");
         setPin("");
@@ -77,8 +81,11 @@ export function LockScreen({ onUnlock, onFail }: { onUnlock: () => void; onFail?
   const date = now ? now.toLocaleDateString("en-PK", { weekday: "long", day: "numeric", month: "long" }) : "";
 
   return (
-    <div className={`pf-lock ${entering ? "entering" : ""} ${state === "error" ? "error" : ""}`} onClick={() => !entering && setEntering(true)}>
-      <div className="pf-lock-bg" />
+    <div className={`pf-lock ${entering ? "entering" : ""} ${state === "error" ? "error" : ""} ${state === "opening" ? "opening" : ""}`} onClick={() => !entering && setEntering(true)}>
+      <div className="pf-lock-doors" aria-hidden="true">
+        <div className="pf-lock-door left" />
+        <div className="pf-lock-door right" />
+      </div>
       <div className="pf-lock-brand">
         <div className="pf-lock-brand-icon"><Crown className="h-6 w-6" /></div>
         <div>
