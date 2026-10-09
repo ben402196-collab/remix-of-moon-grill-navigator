@@ -44,7 +44,7 @@ export function LockScreen({ onUnlock, onFail }: { onUnlock: () => void; onFail?
   }, [entering]);
 
   function press(d: string) {
-    if (state === "checking") return;
+    if (state === "checking" || state === "opening") return;
     setState("idle");
     setPin((p) => {
       const next = (p + d).slice(0, LEN);
