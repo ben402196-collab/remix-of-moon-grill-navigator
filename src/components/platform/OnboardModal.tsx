@@ -71,7 +71,7 @@ export function OnboardModal({ onClose }: { onClose: () => void }) {
             {plans.map((p) => <option key={p.slug} value={p.slug}>{p.name} — {p.price_pkr ? `₨${p.price_pkr.toLocaleString()}/mo` : "free"} · {p.orders_per_day > 9999 ? "unlimited" : p.orders_per_day} orders/day</option>)}
           </select>
         </Field>
-        <div className="flex justify-end gap-2 pt-2">
+        <div className="pf-modal-actions flex justify-end gap-2">
           <button type="button" className="pf-btn pf-btn-ghost" onClick={onClose}>Cancel</button>
           <button className="pf-btn pf-btn-primary" disabled={!ok || saving}>{saving ? <Loader2 className="pf-spin h-4 w-4" /> : null} Add restaurant</button>
         </div>
