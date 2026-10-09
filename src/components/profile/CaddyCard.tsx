@@ -15,7 +15,7 @@ export function CaddyCard({ caddy, onMessage }: Props) {
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className="overflow-hidden rounded-2xl border-2 border-charcoal/10 bg-white shadow-[0_18px_44px_-24px_rgba(20,14,10,0.5)]"
+      className="overflow-hidden rounded-lg border-2 border-charcoal/10 bg-white shadow-[0_18px_44px_-24px_rgba(20,14,10,0.5)]"
     >
       <header className="flex items-center justify-between gap-3 border-b-2 border-charcoal/8 bg-cream px-5 py-3">
         <span className="font-display text-[11px] font-extrabold uppercase tracking-[0.18em] text-charcoal/70">
@@ -35,7 +35,7 @@ export function CaddyCard({ caddy, onMessage }: Props) {
             width={816}
             height={816}
             loading="lazy"
-            className="h-20 w-20 rounded-2xl border-2 border-flame object-cover" decoding="async" />
+            className="h-20 w-20 rounded-lg border-2 border-flame object-cover" decoding="async" />
           <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full border-2 border-white bg-charcoal px-2 py-0.5 font-display text-[10px] font-extrabold text-cream">
             {caddy.rating.toFixed(1)}
           </span>

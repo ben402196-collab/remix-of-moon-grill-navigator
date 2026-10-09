@@ -119,7 +119,7 @@ export function Modal({ title, onClose, children, footer }: { title: string; onC
           <button className="pf-icon-btn" onClick={onClose} aria-label="Close"><X className="h-4 w-4" /></button>
         </div>
         <div className="space-y-4">{children}</div>
-        {footer ? <div className="mt-6 flex justify-end gap-2">{footer}</div> : null}
+        {footer ? <div className="pf-modal-actions mt-6 flex justify-end gap-2">{footer}</div> : null}
       </div>
     </>
   );
